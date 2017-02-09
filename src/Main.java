@@ -1,10 +1,7 @@
 import board.Board;
-import board.BoardPrinter;
-import command.Command;
+import print.BoardPrinter;
 import command.CommandParser;
 
-import java.io.Console;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {

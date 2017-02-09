@@ -5,9 +5,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.stream.Stream;
 
 public class Board {
-    Cell[] cells;
-    int totalMines;
-    int width, height;
+    private Cell[] cells;
+    private int totalMines;
+    private int width, height;
 
     public Board() {
         this.width = 9;
@@ -19,6 +19,9 @@ public class Board {
         for (int i = 0; i < this.cells.length; i++)
             this.cells[i] = new Cell();
     }
+
+    public int getWidth() { return width; }
+    public int getHeight() { return height; }
 
     public boolean defeat() {
         return Arrays.stream(this.cells).anyMatch(cell -> cell.isMine() && cell.isShown());
@@ -70,6 +73,14 @@ public class Board {
         this.cell(x, y).toggleMark();
     }
 
+    public Optional<Cell> cellAt(int x, int y) {
+        if (!this.validCoords(x, y))
+            return Optional.empty();
+
+        int index = this.coordsToIndex(x, y);
+        return Optional.of(this.cells[index]);
+    }
+
     private void spawnMines(int forbiddenX, int forbiddenY) {
         int forbiddenIndex = this.coordsToIndex(forbiddenX, forbiddenY);
 
@@ -102,11 +113,8 @@ public class Board {
         }
     }
 
-    Cell cell(int x, int y) {
-        assert(this.validCoords(x, y));
-
-        int index = this.coordsToIndex(x, y);
-        return this.cells[index];
+    private Cell cell(int x, int y) {
+        return this.cellAt(x, y).get();
     }
 
     private Cell cell(Coords c) {

@@ -1,12 +1,12 @@
 package board;
 
-class Cell {
+public class Cell {
     int number;
     boolean mine;
     boolean shown;
     boolean marked;
 
-    public Cell() {
+    Cell() {
         this.number = 0;
         this.mine = false;
         this.shown = false;
@@ -25,21 +25,29 @@ class Cell {
         return this.shown;
     }
 
-    public void show() {
+    public int getNumber() {
+        if (this.isMine())
+            throw new UnsupportedOperationException();
+
+        return this.number;
+    }
+
+    void show() {
         if (!this.marked)
             this.shown = true;
     }
 
-    public void toggleMark() {
+    void toggleMark() {
         this.marked = !this.marked;
     }
 
-    public void setMine() {
+    void setMine() {
         this.mine = true;
     }
 
-    public void setNumber(int n) {
+    void setNumber(int n) {
         assert(!this.isMine());
         this.number = n;
     }
+
 }
