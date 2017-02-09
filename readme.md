@@ -6,10 +6,16 @@ A basic implementation of the Mine Sweeper game using Java 8.
 ##Why?
 
 Because I needed an excuse to program something in Java, and I had an old mine sweeper in Rust ready to be rewritten.
+Plus I wanted to try JavaFX.
 
 ##How to play?
 
-You will get the instructions printed in your console when you run the game.
+There are two interfaces to the game:
+
+* Console: located at `src/main/java/console/Main.java`
+* JavaFX GUI: located at `src/main/java/gui/Main.java`
+
+Both rely on the same minesweeper implementation located at `src/main/java/board`.
 
 ##Hey! Something is wrong in your code!
 
