@@ -37,8 +37,12 @@ public class Cell {
             this.shown = true;
     }
 
-    void toggleMark() {
+    public void toggleMark() {
         this.marked = !this.marked;
+    }
+
+    public void unmark() {
+        this.marked = false;
     }
 
     void setMine() {

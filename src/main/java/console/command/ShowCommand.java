@@ -1,4 +1,4 @@
-package command;
+package console.command;
 
 import board.Board;
 

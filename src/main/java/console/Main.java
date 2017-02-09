@@ -1,6 +1,8 @@
+package console;
+
 import board.Board;
-import print.BoardPrinter;
-import command.CommandParser;
+import console.print.BoardPrinter;
+import console.command.CommandParser;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package command;
+package console.command;
 
 import board.Board;
 
@@ -11,6 +11,6 @@ public class MarkCommand implements Command {
     }
 
     public void execute(Board board) {
-        board.markCell(this.x, this.y);
+        board.cellAt(this.x, this.y).get().toggleMark();
     }
 }

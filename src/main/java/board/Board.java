@@ -1,5 +1,9 @@
 package board;
 
+import javafx.event.EventHandler;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.stream.Stream;
@@ -9,15 +13,20 @@ public class Board {
     private int totalMines;
     private int width, height;
 
+
+
     public Board() {
         this.width = 9;
         this.height = 9;
         this.totalMines = 10;
-        this.cells = new Cell[this.width * this.height];
+        this.createCells();
+    }
 
-        // Populate the cells with empty ones
-        for (int i = 0; i < this.cells.length; i++)
-            this.cells[i] = new Cell();
+    public Board(int width, int height, int mines) {
+        this.width = width;
+        this.height = height;
+        this.totalMines = mines;
+        this.createCells();
     }
 
     public int getWidth() { return width; }
@@ -35,6 +44,10 @@ public class Board {
         return !this.defeat() && !victory;
     }
 
+    public boolean firstTurn() {
+        return Arrays.stream(this.cells).noneMatch(Cell::isShown);
+    }
+
     public int minesLeft() {
         return this.totalMines - this.markedMines();
     }
@@ -42,6 +55,12 @@ public class Board {
     public void showCell(int x, int y) {
         if (!this.validCoords(x, y) || this.cell(x, y).isMarked())
             return;
+
+        // If the cell is a mine, we show it and stop here
+        if (this.cell(x, y).isMine()) {
+            this.cell(x, y).show();
+            return;
+        }
 
         // If on the first turn, we need to spawn the mines
         if (this.firstTurn())
@@ -58,7 +77,8 @@ public class Board {
             if (cell.isShown())
                 continue;
 
-            // Show this cell
+            // Show this cell (and unmark it just in case)
+            cell.unmark();
             cell.show();
 
             // If the cell is empty, enqueue all non-mine neighbors
@@ -69,16 +89,24 @@ public class Board {
         }
     }
 
-    public void markCell(int x, int y) {
-        this.cell(x, y).toggleMark();
-    }
-
     public Optional<Cell> cellAt(int x, int y) {
         if (!this.validCoords(x, y))
             return Optional.empty();
 
         int index = this.coordsToIndex(x, y);
         return Optional.of(this.cells[index]);
+    }
+
+    public Stream<Cell> cellStream() {
+        return Arrays.stream(this.cells);
+    }
+
+    private void createCells() {
+        this.cells = new Cell[this.width * this.height];
+
+        // Populate the cells with empty ones
+        for (int i = 0; i < this.cells.length; i++)
+            this.cells[i] = new Cell();
     }
 
     private void spawnMines(int forbiddenX, int forbiddenY) {
@@ -147,10 +175,6 @@ public class Board {
     private boolean validCoords(int x, int y) {
         return 0 <= x && x < this.width
             && 0 <= y && y < this.height;
-    }
-
-    private boolean firstTurn() {
-        return Arrays.stream(this.cells).noneMatch(Cell::isShown);
     }
 
     private int markedMines() {

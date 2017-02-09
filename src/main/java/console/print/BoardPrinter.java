@@ -1,4 +1,4 @@
-package print;
+package console.print;
 
 import board.Board;
 import board.Cell;

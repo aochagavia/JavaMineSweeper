@@ -1,4 +1,4 @@
-package command;
+package console.command;
 
 import java.security.InvalidParameterException;
 import java.util.Optional;
